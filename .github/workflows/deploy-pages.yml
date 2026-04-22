@@ -7,9 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
@@ -23,6 +21,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v5
@@ -55,26 +55,21 @@ jobs:
       - name: Build
         run: npm run build:pages
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
+      - name: Deploy to gh-pages branch
+        shell: bash
+        run: |
+          set -euo pipefail
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
-        with:
-          include-hidden-files: true
-          path: out
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+          deploy_dir="$(mktemp -d)"
+          git worktree add --detach "$deploy_dir"
+          find "$deploy_dir" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -R out/. "$deploy_dir"/
 
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          cd "$deploy_dir"
+          git checkout --orphan gh-pages
+          git add --all
+          git commit -m "Deploy static site"
+          git push origin HEAD:gh-pages --force
