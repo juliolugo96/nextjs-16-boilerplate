@@ -1,0 +1,42 @@
+.page {
+  min-height: 100vh;
+  padding: 3rem 0;
+}
+
+.header {
+  margin-bottom: 2rem;
+  max-width: 52rem;
+}
+
+.eyebrow {
+  color: var(--accent-strong);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: clamp(2rem, 4vw, 3.75rem);
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0;
+}
+
+.description {
+  color: var(--muted);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  margin: 1rem 0 0;
+}
+
+.notice {
+  background: var(--warning-soft);
+  border: 1px solid #f3d38b;
+  border-radius: 8px;
+  color: var(--warning);
+  line-height: 1.55;
+  margin: 0 0 1.5rem;
+  padding: 1rem;
+}

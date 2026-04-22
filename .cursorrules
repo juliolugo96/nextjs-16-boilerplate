@@ -1,0 +1,8 @@
+Follow the canonical project instructions in agents/shared.md.
+
+Cursor-specific rules:
+- Keep all new React components aligned with the repository component convention.
+- Use atomic design folders for UI placement.
+- Use docs/patterns.md before adding pattern implementations.
+- Prefer CSS Modules colocated with components.
+- Run npm run typecheck, npm run lint, and npm run build before handoff.
